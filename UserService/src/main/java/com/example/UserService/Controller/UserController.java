@@ -5,9 +5,7 @@ import com.example.UserService.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Controller
@@ -26,7 +24,7 @@ public class UserController {
     // Handle Login form submission (POST request)
     @PostMapping("/login")
     public String loginUser(@RequestParam String username, @RequestParam String password, Model model) {
-        UserDTO userDTO = new UserDTO(username, password); // Create DTO from form data
+        UserDTO userDTO = new UserDTO(username, password, null, null, null, null, null, null, null, null); // Create DTO from form data
         String response = userService.loginUser(userDTO); // Call service for login validation
 
         // Based on the response from service, you can redirect or show a message
@@ -46,8 +44,14 @@ public class UserController {
 
     // Handle Register form submission (POST request)
     @PostMapping("/register")
-    public String registerUser(@RequestParam String username, @RequestParam String password, Model model) {
-        UserDTO userDTO = new UserDTO(username, password); // Create DTO from form data
+    public String registerUser(@RequestParam String username, @RequestParam String password,
+                               @RequestParam String email, @RequestParam String firstName,
+                               @RequestParam String lastName, @RequestParam String phoneNumber,
+                               @RequestParam String address, @RequestParam String city,
+                               @RequestParam String country, @RequestParam String zipCode,
+                               Model model) {
+        UserDTO userDTO = new UserDTO(username, password, email, firstName, lastName, phoneNumber,
+                address, city, country, zipCode); // Create DTO from form data
         String response = userService.registerUser(userDTO); // Call service for registration
 
         if (response.equals("success")) {
@@ -57,4 +61,12 @@ public class UserController {
             return "register";  // Stay on registration page and show error
         }
     }
+
+    @ResponseBody
+    @GetMapping("/getuserdetail/{username}")
+    public UserDTO userdetail(@PathVariable String username, Model model) {
+        UserDTO userdetail = userService.getUserDetails(username);
+        return userdetail;
+    }
+
 }

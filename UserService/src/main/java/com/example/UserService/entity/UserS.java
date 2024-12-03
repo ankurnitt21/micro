@@ -19,5 +19,13 @@ public class UserS { //Bythis name table will be created
 
     private String username;
     private String password;
+    private String email;
+    private String firstName;
+    private String lastName;
+    private String phoneNumber;
+    private String address;
+    private String city;
+    private String country;
+    private String zipCode;
 
 }
