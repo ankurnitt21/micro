@@ -8,10 +8,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Controller
 @RequiredArgsConstructor
 public class UserController {
+
+    @Autowired
     private final UserService userService;
 
     // Show Login page (GET request)
@@ -28,7 +31,7 @@ public class UserController {
 
         // Based on the response from service, you can redirect or show a message
         if (response.equals("success")) {
-            return "redirect:/";  // Redirect to home page if login is successful
+            return "redirect:http://localhost:8081/api/orders/products";  // Return to a view where you will display the products
         } else {
             model.addAttribute("error", "Invalid credentials");
             return "login";  // Stay on login page and show error

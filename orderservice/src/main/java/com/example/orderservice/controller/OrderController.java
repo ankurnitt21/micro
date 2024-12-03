@@ -34,7 +34,7 @@ public class OrderController {
     public String createOrder(@RequestParam Long userId, @RequestParam String product, @RequestParam int quantity, Model model) {
         OrderDTO order = orderService.createOrder(userId, product, quantity);
         if(order.getUserId()==userId){
-            return "redirect:/";
+            return "product";
         } else {
             model.addAttribute("order", order);  // Add order to model
             return "product";  // Thymeleaf will look for a template named "Order Created.html"
