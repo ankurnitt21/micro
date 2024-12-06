@@ -1,8 +1,11 @@
 package com.example.UserService.Controller;
 
 import com.example.UserService.dto.UserDTO;
+import com.example.UserService.exception.UnauthorizedAccessException;
 import com.example.UserService.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,21 +22,6 @@ public class UserController {
     @GetMapping("/login")
     public String loginPage() {
         return "login";  // Thymeleaf template for login form
-    }
-
-    // Handle Login form submission (POST request)
-    @PostMapping("/login")
-    public String loginUser(@RequestParam String username, @RequestParam String password, Model model) {
-        UserDTO userDTO = new UserDTO(username, password, null, null, null, null, null, null, null, null); // Create DTO from form data
-        String response = userService.loginUser(userDTO); // Call service for login validation
-
-        // Based on the response from service, you can redirect or show a message
-        if (response.equals("success")) {
-            return "redirect:http://localhost:8081/api/orders/products";  // Return to a view where you will display the products
-        } else {
-            model.addAttribute("error", "Invalid credentials");
-            return "login";  // Stay on login page and show error
-        }
     }
 
     // Show Register page (GET request)
@@ -65,6 +53,10 @@ public class UserController {
     @ResponseBody
     @GetMapping("/getuserdetail/{username}")
     public UserDTO userdetail(@PathVariable String username, Model model) {
+        String loggedInUsername = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+        if(!loggedInUsername.equals(username)){
+            throw new UnauthorizedAccessException("You are not authorized to view this user's details");
+        }
         UserDTO userdetail = userService.getUserDetails(username);
         return userdetail;
     }

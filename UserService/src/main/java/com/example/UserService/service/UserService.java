@@ -36,13 +36,6 @@ public class UserService {
     }
 
     // Login user method now returns success/failure
-    public String loginUser(UserDTO userDTO) {
-        UserS user = userRepository.findByUsername(userDTO.getUsername());
-        if (user == null || !passwordHelper.matches(userDTO.getPassword(), user.getPassword())) {
-            return "failure";  // Invalid username or password
-        }
-        return "success";  // Successful login
-    }
 
     public UserDTO getUserDetails(String username) {
         UserS user = userRepository.findByUsername(username);

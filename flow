@@ -1,0 +1,28 @@
+Summary of the Enhanced Flow:
+User registers -> User ID is created
+User browses product page
+User places order -> Order Service receives user ID, product details
+Order Service calls User Service -> User details (address, payment method) are fetched
+User Service responds -> Order Service gets user details
+Order validation & fraud checks (optional but industry-standard)
+Inventory check (optional but important)
+Order is processed -> Payment deducted, order confirmed
+Order confirmation sent -> User notified (page, email, SMS)
+Shipping updates (optional post-purchase interaction)
+Post-purchase support (handling returns, exchanges, etc.)
+
+
+
+Summary of Sync vs Async Communication
+Step	Type of Communication	Explanation
+User Registration	Synchronous	Immediate feedback to the user about registration success/failure.
+Redirect to Product Page	Synchronous	Part of the HTTP request/response cycle.
+Place Order	Synchronous	User expects immediate feedback on order processing.
+Order Service Call to User Service	Synchronous	The order process depends on user details, which must be fetched immediately.
+User Service Response	Synchronous	Immediate return of required user details (address, payment method, etc.).
+Order Validation/Fraud Check	Synchronous	Critical real-time validation (e.g., payment validation).
+Inventory Check	Synchronous	The order cannot proceed without knowing if the product is in stock.
+Order Processing	Synchronous	Payment processing, updating inventory, and finalizing the order.
+Order Confirmation & Notification	Asynchronous	Notifications and emails can be sent asynchronously after the order is processed.
+Delivery Status & Shipping Updates	Asynchronous	Shipping and delivery updates can be triggered asynchronously via events or queues.
+Post-Purchase Support	Synchronous	Customer service interactions usually require immediate responses.
