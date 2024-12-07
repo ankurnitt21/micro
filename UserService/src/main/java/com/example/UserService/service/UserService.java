@@ -1,9 +1,11 @@
 package com.example.UserService.service;
 
 import com.example.UserService.dto.UserDTO;
-import com.example.UserService.entity.UserS;
+import com.example.UserService.entity.User;
+import com.example.UserService.entity.UserRole;
 import com.example.UserService.helper.PasswordHelper;
 import com.example.UserService.repository.UserRepository;
+import com.example.UserService.repository.UserRoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final UserRoleRepository userRoleRepository;
     private final PasswordHelper passwordHelper;
 
     // Register user method now returns success/failure
@@ -19,7 +22,8 @@ public class UserService {
             return "failure";  // Username already exists
         }
         String encodedPassword = passwordHelper.hashPassword(userDTO.getPassword());
-        UserS user = new UserS();
+        User user = new User();
+        UserRole user_role = new UserRole();
         user.setUsername(userDTO.getUsername());
         user.setPassword(encodedPassword);
         user.setEmail(userDTO.getEmail());
@@ -30,7 +34,10 @@ public class UserService {
         user.setCity(userDTO.getCity());
         user.setCountry(userDTO.getCountry());
         user.setZipCode(userDTO.getZipCode());
+        user_role.setUserId(user.getUser_id());
+        user_role.setRole("USER");
 
+        //userRoleRepository.save(user_role);
         userRepository.save(user);
         return "success";  // Successful registration
     }
@@ -38,7 +45,7 @@ public class UserService {
     // Login user method now returns success/failure
 
     public UserDTO getUserDetails(String username) {
-        UserS user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username);
         if (user != null) {
             return new UserDTO(
                     user.getUsername(),

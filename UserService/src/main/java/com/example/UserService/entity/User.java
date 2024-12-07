@@ -1,21 +1,21 @@
 package com.example.UserService.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Set;
 
 @Entity
 @Data               // Lombok generates getters, setters, toString, equals, hashCode
 @AllArgsConstructor
 @NoArgsConstructor // Lombok generates a constructor with all arguments
-public class UserS { //Bythis name table will be created
+@Table(name = "userdetails")
+public class User { // The name of the table will be `userdetails`
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long user_id;
 
     private String username;
     private String password;
@@ -27,5 +27,4 @@ public class UserS { //Bythis name table will be created
     private String city;
     private String country;
     private String zipCode;
-
 }

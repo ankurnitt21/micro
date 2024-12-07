@@ -1,10 +1,11 @@
 package com.example.UserService.service;
 
-import com.example.UserService.entity.UserS;
+import com.example.UserService.entity.User;
+import com.example.UserService.entity.UserRole;
 import com.example.UserService.repository.UserRepository;
+import com.example.UserService.repository.UserRoleRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -17,12 +18,15 @@ public class CustomUserDetailsService implements org.springframework.security.co
 
 
     private UserRepository userRepository;
+    private UserRoleRepository userRoleRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserS user = userRepository.findByUsername(username);
-
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_USER");
+        User user = userRepository.findByUsername(username);
+        UserRole userRole = userRoleRepository.findByUserId(user.getUser_id());
+        System.out.println(userRole.getRole() + " " + userRole.getUserId());
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_"+userRole.getRole());
+        System.out.println(authority.getAuthority());
 
 
         return new org.springframework.security.core.userdetails.User
@@ -30,4 +34,5 @@ public class CustomUserDetailsService implements org.springframework.security.co
                         user.getPassword(),
                         Collections.singletonList(authority));
     }
+
 }

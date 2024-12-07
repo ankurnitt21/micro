@@ -2,9 +2,11 @@ package com.example.UserService.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data               // Lombok generates getters, setters, toString, equals, hashCode
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserDTO {
 
     private String username;
@@ -17,4 +19,5 @@ public class UserDTO {
     private String city;
     private String country;
     private String zipCode;
+
 }

@@ -4,6 +4,8 @@ import com.example.UserService.dto.UserDTO;
 import com.example.UserService.exception.UnauthorizedAccessException;
 import com.example.UserService.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -51,12 +53,10 @@ public class UserController {
     }
 
     @ResponseBody
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/getuserdetail/{username}")
     public UserDTO userdetail(@PathVariable String username, Model model) {
-        String loggedInUsername = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        if(!loggedInUsername.equals(username)){
-            throw new UnauthorizedAccessException("You are not authorized to view this user's details");
-        }
+
         UserDTO userdetail = userService.getUserDetails(username);
         return userdetail;
     }
