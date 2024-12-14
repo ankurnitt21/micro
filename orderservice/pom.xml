@@ -76,11 +76,7 @@
 			<artifactId>spring-session-data-redis</artifactId>
 		</dependency>
 
-		<!-- Spring Boot Starter for Security (for user authentication/authorization) -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
+
 	</dependencies>
 
 	<build>

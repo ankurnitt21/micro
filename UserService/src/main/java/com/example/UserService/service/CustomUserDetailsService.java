@@ -13,11 +13,15 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 
 @Service
-@AllArgsConstructor
 public class CustomUserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
+
+    public CustomUserDetailsService(UserRepository userRepository, UserRoleRepository userRoleRepository) {
+        this.userRepository=userRepository;
+        this.userRoleRepository=userRoleRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

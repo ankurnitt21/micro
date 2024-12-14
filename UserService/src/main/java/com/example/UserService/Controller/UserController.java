@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.Set;
 
 @Controller
-@RequiredArgsConstructor
 public class UserController {
 
     @Autowired
@@ -30,6 +29,10 @@ public class UserController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     // Show Login page (GET request)
     @GetMapping("/login")

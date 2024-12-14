@@ -10,11 +10,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
     private final PasswordHelper passwordHelper;
+
+    public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordHelper passwordHelper) {
+        this.userRepository = userRepository;
+        this.userRoleRepository = userRoleRepository;
+        this.passwordHelper = passwordHelper;
+    }
 
     // Register user method now returns success/failure
     public String registerUser(UserDTO userDTO) {

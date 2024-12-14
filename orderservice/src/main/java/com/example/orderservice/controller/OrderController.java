@@ -13,13 +13,18 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/api/orders")
-@AllArgsConstructor
 public class OrderController {
     private final OrderService orderService;
+
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
+    }
 
     // Display product selection
     @GetMapping("/products")
     public String showProducts() {
+        System.out.println("In products");
+
         return "product"; // Display the products list page
     }
 

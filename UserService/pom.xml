@@ -54,19 +54,15 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		<!-- Lombok (for reducing boilerplate code like getters/setters) -->
+		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<optional>true</optional>
+			<scope>provided</scope>
 		</dependency>
 
 		<!-- Spring Boot Starter Test (for unit testing) -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
+
 
 		<!-- Spring Security Crypto (for encryption of passwords etc.) -->
 		<dependency>
@@ -86,6 +82,7 @@
 			<artifactId>spring-boot-starter-data-redis</artifactId>
 			<version>3.3.5</version>
 		</dependency>
+
 
 		<!-- Spring Boot Starter for session management -->
 		<dependency>
