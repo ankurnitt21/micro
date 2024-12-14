@@ -4,7 +4,10 @@ import com.example.UserService.dto.UserDTO;
 import com.example.UserService.exception.UnauthorizedAccessException;
 import com.example.UserService.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.Authenticator;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -12,6 +15,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Controller
 @RequiredArgsConstructor
@@ -19,6 +27,9 @@ public class UserController {
 
     @Autowired
     private final UserService userService;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     // Show Login page (GET request)
     @GetMapping("/login")
@@ -56,9 +67,26 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/getuserdetail/{username}")
     public UserDTO userdetail(@PathVariable String username, Model model) {
-
+        printSessionData();
         UserDTO userdetail = userService.getUserDetails(username);
         return userdetail;
     }
+
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
+
+    public void printSessionData() {
+        // Get all keys from Redis
+        Set<String> keys = redisTemplate.keys("*");
+
+        if (keys != null && !keys.isEmpty()) {
+            for (String key : keys) {
+                    System.out.println("Unknown type for key: " + key);
+            }
+        } else {
+            System.out.println("No session data found in Redis.");
+        }
+    }
+
 
 }

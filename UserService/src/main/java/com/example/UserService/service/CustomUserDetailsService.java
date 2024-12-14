@@ -16,23 +16,27 @@ import java.util.Collections;
 @AllArgsConstructor
 public class CustomUserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
-
-    private UserRepository userRepository;
-    private UserRoleRepository userRoleRepository;
+    private final UserRepository userRepository;
+    private final UserRoleRepository userRoleRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found: " + username);
+        }
+
         UserRole userRole = userRoleRepository.findByUserId(user.getUser_id());
+        if (userRole == null) {
+            throw new UsernameNotFoundException("User role not found for: " + username);
+        }
+
         System.out.println(userRole.getRole() + " " + userRole.getUserId());
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_"+userRole.getRole());
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + userRole.getRole());
         System.out.println(authority.getAuthority());
+        System.out.println(username);
 
-
-        return new org.springframework.security.core.userdetails.User
-                (username,
-                        user.getPassword(),
-                        Collections.singletonList(authority));
+        return new org.springframework.security.core.userdetails.User(
+                username, "{noop}" + user.getPassword(), Collections.singletonList(authority));
     }
-
 }

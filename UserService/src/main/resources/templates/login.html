@@ -12,8 +12,16 @@
     <label for="password">Password:</label>
     <input type="password" id="password" name="password" required>
     <br><br>
+    <!-- Error message when authentication fails -->
+    <div th:if="${param.error}">
+        <p style="color: red;">Invalid username or password. Please try again.</p>
+    </div>
+
     <button type="submit">Login</button>
 </form>
-<p th:if="${error}" th:text="${error}"></p> <!-- Show error if available -->
+
+<!-- Displaying other error messages from the controller -->
+<p th:if="${error}" th:text="${error}"></p>
+
 </body>
 </html>
