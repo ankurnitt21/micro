@@ -21,6 +21,17 @@ public class UserService {
         this.passwordHelper = passwordHelper;
     }
 
+    public String authenticateUser(String username, String password) {
+        UserDTO userDTO = getUserDetails(username);
+
+        if(passwordHelper.matches(password,userDTO.getPassword())){
+            return "redirect:http://localhost:8081/products";
+        } else {
+            return "/login";
+        }
+
+    }
+
     // Register user method now returns success/failure
     public String registerUser(UserDTO userDTO) {
         if(userRepository.existsByUsername(userDTO.getUsername())) {
@@ -30,7 +41,7 @@ public class UserService {
         User user = new User();
         UserRole user_role = new UserRole();
         user.setUsername(userDTO.getUsername());
-        user.setPassword(userDTO.getPassword());
+        user.setPassword(encodedPassword);
         user.setEmail(userDTO.getEmail());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
@@ -42,7 +53,7 @@ public class UserService {
         user_role.setUserId(user.getUser_id());
         user_role.setRole("USER");
 
-        //userRoleRepository.save(user_role);
+        userRoleRepository.save(user_role);
         userRepository.save(user);
         return "success";  // Successful registration
     }
